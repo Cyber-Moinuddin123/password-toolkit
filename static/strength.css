@@ -1,0 +1,177 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('/static/bg1.webp') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    height: 100vh;
+    position: relative;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+
+#container {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    width: 300px;
+}
+
+.password-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    padding: 10px 40px 10px 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.password-wrapper input[type="password"]:focus,
+.password-wrapper input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.eye-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: #666;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.eye-toggle:hover {
+    color: #333;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.eye-toggle:focus {
+    outline: none;
+}
+
+/* CSS Eye Icon */
+.eye-icon {
+    position: relative;
+    width: 20px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eye-outer {
+    width: 20px;
+    height: 12px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    position: relative;
+    background: transparent;
+}
+
+.eye-inner {
+    width: 6px;
+    height: 6px;
+    background-color: currentColor;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Hidden eye state (with line through) */
+.eye-icon.eye-hidden::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -2px;
+    right: -2px;
+    height: 2px;
+    background-color: currentColor;
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 1;
+}
+
+.eye-icon.eye-hidden .eye-inner {
+    opacity: 0.3;
+}
+
+#eyeIcon {
+    user-select: none;
+}
+
+#strengthBarContainer {
+    width: 100%;
+    height: 10px;
+    background-color: #ddd;
+    margin-top: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#strengthBar {
+    height: 100%;
+    width: 0%;
+    background-color: red;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+#feedback {
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+#copyBtn {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#copyBtn:hover {
+    background-color: #45a049;
+}
+
+#copyMsg {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}

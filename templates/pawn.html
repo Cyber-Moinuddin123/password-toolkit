@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Have I Been Pwned?</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pawn.css') }}">
+    <!-- Font Awesome for professional eye icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+           integrity="sha512-H6Y06S7NPRmnyfNsmQd/G26iGu8zCWzDp7Kc+/U8Z+0tU6HfZGMH3yDhcuUNpv2htcdzRv88O8BLzZzE+IYJ1A=="
+           crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <h1>Have I Been Pwned?</h1>
+        <p class="subtitle">Check if your password has appeared in data breaches</p>
+
+        <div class="password-wrapper">
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button id="togglePassword" type="button" title="Toggle password visibility">
+                <span class="eye-icon">👁</span>
+            </button>
+        </div>
+
+        <button id="checkBtn">Check</button>
+        <p id="resultMsg"></p>
+    </div>
+
+    <script>
+        const checkBtn = document.getElementById("checkBtn");
+        const passwordInput = document.getElementById("passwordInput");
+        const resultMsg = document.getElementById("resultMsg");
+        const togglePassword = document.getElementById("togglePassword");
+        const eyeIcon = togglePassword.querySelector(".eye-icon");
+
+        togglePassword.addEventListener("click", function () {
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+
+            // Toggle between eye and eye with diagonal slash
+            if (type === "password") {
+                eyeIcon.classList.remove("slashed");
+            } else {
+                eyeIcon.classList.add("slashed");
+            }
+        });
+
+        checkBtn.addEventListener("click", function () {
+            const password = passwordInput.value;
+
+            if (!password) {
+                resultMsg.textContent = "Please enter a password.";
+                resultMsg.style.color = "orange";
+                return;
+            }
+
+            fetch("/check-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.breached) {
+                    resultMsg.textContent = `⚠️ This password has been found ${data.count} times in breaches!`;
+                    resultMsg.style.color = "red";
+                } else {
+                    resultMsg.textContent = "✅ This password was NOT found in any known breach.";
+                    resultMsg.style.color = "lightgreen";
+                }
+            })
+            .catch(error => {
+                resultMsg.textContent = "Error contacting the API.";
+                resultMsg.style.color = "red";
+            });
+        });
+
+        // Allow Enter key to trigger check
+        passwordInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

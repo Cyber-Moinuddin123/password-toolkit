@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Password Generator</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='random.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Random Password Generator</h1>
+        <input type="text" id="passwordInput" class="password-input" placeholder="Your secure password will appear here..." readonly>
+        <button id="generateBtn">Generate Password</button>
+        <button id="copyBtn" class="copy-btn" style="display: none;">Copy Password</button>
+    </div>
+    
+    <script>
+        const generateBtn = document.getElementById("generateBtn");
+        const passwordInput = document.getElementById("passwordInput");
+        const copyBtn = document.getElementById("copyBtn");
+
+        generateBtn.addEventListener("click", function () {
+            console.log("Generate button clicked");
+            generateBtn.textContent = "Generating...";
+            generateBtn.disabled = true;
+            
+            // Reset any previous error styling
+            passwordInput.style.color = "#333";
+            passwordInput.value = "Generating...";
+            
+            console.log("Making fetch request to /generate-password");
+            
+            fetch("/generate-password")
+                .then(response => {
+                    console.log("Received response:", response);
+                    console.log("Response status:", response.status);
+                    console.log("Response ok:", response.ok);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Received data:", data);
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    if (!data.password) {
+                        throw new Error("No password in response");
+                    }
+                    passwordInput.value = data.password;
+                    copyBtn.style.display = "inline-block";
+                    console.log("Password generated successfully");
+                })
+                .catch(error => {
+                    console.error('Detailed error:', error);
+                    console.error('Error message:', error.message);
+                    console.error('Error stack:', error.stack);
+                    
+                    passwordInput.value = `Error: ${error.message}`;
+                    passwordInput.style.color = "red";
+                    copyBtn.style.display = "none";
+                })
+                .finally(() => {
+                    generateBtn.textContent = "Generate Password";
+                    generateBtn.disabled = false;
+                    console.log("Request completed");
+                });
+        });
+
+        // Copy to clipboard functionality
+        copyBtn.addEventListener("click", function () {
+            passwordInput.select();
+            passwordInput.setSelectionRange(0, 99999); // For mobile devices
+            
+            navigator.clipboard.writeText(passwordInput.value).then(() => {
+                copyBtn.textContent = "Copied!";
+                copyBtn.style.backgroundColor = "#218838";
+                setTimeout(() => {
+                    copyBtn.textContent = "Copy Password";
+                    copyBtn.style.backgroundColor = "#28a745";
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                try {
+                    document.execCommand('copy');
+                    copyBtn.textContent = "Copied!";
+                    copyBtn.style.backgroundColor = "#218838";
+                    setTimeout(() => {
+                        copyBtn.textContent = "Copy Password";
+                        copyBtn.style.backgroundColor = "#28a745";
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy password', err);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

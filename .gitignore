@@ -1,0 +1,30 @@
+# Windows system folders
+AppData/
+Thumbs.db
+*.log
+*.tmp
+desktop.ini
+
+# Python-related
+__pycache__/
+*.pyc
+*.pyo
+
+# Flask/instance data
+instance/
+*.db
+*.sqlite3
+
+# Environment
+.env
+venv/
+env/
+
+# Node.js (if used)
+node_modules/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store

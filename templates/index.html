@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Password Toolkit - Homepage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Password Toolkit</h1>
+    <img src="{{ url_for('static', filename='passlogo.webp') }}" alt="Password Toolkit Logo" class="logo" />
+    <p class="subtitle">Your one-stop toolkit for securing and testing your passwords.</p>
+
+    <div class="buttons">
+      <a href="{{ url_for('strength_checker') }}" class="btn">🔒 Password Strength Checker</a>
+      <a href="{{ url_for('random_generator') }}" class="btn">🔁 Random Password Generator</a>
+      <a href="{{ url_for('have_i_been_pawned') }}" class="btn">🕵️‍♂️ Have I Been Pwned</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Mohammad Moinuddin. All rights reserved.</p>
+  </footer>
+</body>
+</html>
